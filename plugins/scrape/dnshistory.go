@@ -96,20 +96,7 @@ func (d *dnsHistory) process(e *et.Event, body string) {
 		n := strings.ToLower(strings.TrimSpace(name))
 		// if the subdomain is not in scope, skip it
 		if n != "" && e.Session.Config().IsDomainInScope(n) {
-			d.submitCallback(e, n)
+			support.SubmitFQDNGuess(e, n)
 		}
 	}
-}
-
-func (d *dnsHistory) submitCallback(e *et.Event, name string) {
-	support.AppendToDBQueue(func() {
-		if a, err := e.Session.DB().Create(nil, "",
-			&domain.FQDN{Name: name}); err == nil && a != nil {
-			_ = e.Dispatcher.DispatchEvent(&et.Event{
-				Name:    name,
-				Asset:   a,
-				Session: e.Session,
-			})
-		}
-	})
 }

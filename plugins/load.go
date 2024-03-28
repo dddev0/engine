@@ -12,7 +12,7 @@ import (
 	et "github.com/owasp-amass/engine/types"
 )
 
-var pluginStartFuncs = []func() et.Plugin{
+var pluginNewFuncs = []func() et.Plugin{
 	api.NewBinaryEdge,
 	api.NewChaos,
 	api.NewDNSRepo,
@@ -31,13 +31,14 @@ var pluginStartFuncs = []func() et.Plugin{
 	scrape.NewDuckDuckGo,
 	scrape.NewRapidDNS,
 	scrape.NewSiteDossier,
-	newIPNetblock,
+	NewIPNetblock,
+	NewKnownFQDN,
 }
 
 func LoadAndStartPlugins(r et.Registry) error {
 	var started []et.Plugin
 
-	for _, f := range pluginStartFuncs {
+	for _, f := range pluginNewFuncs {
 		if p := f(); p != nil {
 			if err := p.Start(r); err != nil {
 				stopPlugins(started)

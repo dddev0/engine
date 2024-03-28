@@ -26,7 +26,7 @@ type ipNetblock struct {
 	log  *slog.Logger
 }
 
-func newIPNetblock() et.Plugin {
+func NewIPNetblock() et.Plugin {
 	return &ipNetblock{name: "IP-Netblock"}
 }
 

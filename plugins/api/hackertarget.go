@@ -97,20 +97,7 @@ func (ht *hackerTarget) process(e *et.Event, records [][]string) {
 		// if the subdomain is not in scope, skip it
 		name := strings.ToLower(strings.TrimSpace(record[0]))
 		if name != "" && e.Session.Config().IsDomainInScope(name) {
-			ht.submitCallback(e, name)
+			support.SubmitFQDNGuess(e, name)
 		}
 	}
-}
-
-func (ht *hackerTarget) submitCallback(e *et.Event, name string) {
-	support.AppendToDBQueue(func() {
-		if a, err := e.Session.DB().Create(nil, "",
-			&domain.FQDN{Name: name}); err == nil && a != nil {
-			_ = e.Dispatcher.DispatchEvent(&et.Event{
-				Name:    name,
-				Asset:   a,
-				Session: e.Session,
-			})
-		}
-	})
 }

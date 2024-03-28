@@ -124,20 +124,7 @@ func (c *chaos) process(e *et.Event, domain, body string) {
 		// if the subdomain is not in scope, skip it
 		name := strings.ToLower(strings.TrimSpace(fqdn))
 		if name != "" && e.Session.Config().IsDomainInScope(name) {
-			c.submitCallback(e, name)
+			support.SubmitFQDNGuess(e, name)
 		}
 	}
-}
-
-func (c *chaos) submitCallback(e *et.Event, name string) {
-	support.AppendToDBQueue(func() {
-		if a, err := e.Session.DB().Create(nil, "",
-			&domain.FQDN{Name: name}); err == nil && a != nil {
-			_ = e.Dispatcher.DispatchEvent(&et.Event{
-				Name:    name,
-				Asset:   a,
-				Session: e.Session,
-			})
-		}
-	})
 }
