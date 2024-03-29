@@ -107,7 +107,7 @@ func (r *mutationResolver) TerminateSession(ctx context.Context, sessionToken st
 	}
 
 	result = true
-	r.Manager.CancelSession(token)
+	go r.Manager.CancelSession(token)
 	return &result, nil
 }
 
