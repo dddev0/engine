@@ -204,6 +204,9 @@ func guessAttempt(e *et.Event, name string, ch chan struct{}) {
 	}
 
 	for _, qtype := range []uint16{dns.TypeCNAME, dns.TypeA, dns.TypeAAAA} {
+		if e.Session.Done() {
+			return
+		}
 		if ans, err := PerformUntrustedQuery(name, qtype); err == nil && ans != nil {
 			guessCallback(e, name)
 		}
