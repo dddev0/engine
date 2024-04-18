@@ -44,61 +44,119 @@ type baseline struct {
 
 // baselineResolvers is a list of trusted public DNS resolvers.
 var baselineResolvers = []baseline{
-	{"8.8.8.8", 20},         // Google Primary
-	{"8.8.4.4", 20},         // Google Secondary
-	{"95.85.95.85", 10},     // Gcore DNS Primary
-	{"2.56.220.2", 10},      // Gcore DNS Secondary
-	{"76.76.2.0", 10},       // ControlD Primary
-	{"76.76.10.0", 10},      // ControlD Secondary
-	{"9.9.9.9", 10},         // Quad9 Primary
-	{"149.112.112.112", 10}, // Quad9 Secondary
-	{"208.67.222.222", 10},  // Cisco OpenDNS Home Primary
-	{"208.67.220.220", 10},  // Cisco OpenDNS Home Secondary
-	{"1.1.1.1", 15},         // Cloudflare Primary
-	{"1.0.0.1", 15},         // Cloudflare Secondary
-	{"185.228.168.9", 5},    // CleanBrowsing Primary
-	{"185.228.169.9", 5},    // CleanBrowsing Secondary
-	{"76.76.19.19", 5},      // Alternate DNS Primary
-	{"76.223.122.150", 5},   // Alternate DNS Secondary
-	{"94.140.14.14", 5},     // AdGuard DNS Primary
-	{"94.140.15.15", 5},     // AdGuard DNS Secondary
-	{"176.103.130.130", 5},  // AdGuard
-	{"176.103.130.131", 5},  // AdGuard
-	{"8.26.56.26", 5},       // Comodo Secure DNS Primary
-	{"8.20.247.20", 5},      // Comodo Secure DNS Secondary
-	{"205.171.3.65", 5},     // CenturyLink Level3 Primary
-	{"205.171.2.65", 5},     // CenturyLink Level3 Secondary
-	{"64.6.64.6", 5},        // Verisign DNS Primary
-	{"64.6.65.6", 5},        // Verisign DNS Secondary
-	{"209.244.0.3", 5},      // CenturyLink Level3
-	{"209.244.0.4", 5},      // CenturyLink Level3
-	{"149.112.121.10", 5},   // CIRA Canadian Shield Primary
-	{"149.112.122.10", 5},   // CIRA Canadian Shield Secondary
-	{"138.197.140.189", 5},  // OpenNIC Primary
-	{"162.243.19.47", 5},    // OpenNIC Secondary
-	{"216.87.84.211", 5},    // OpenNIC
-	{"23.90.4.6", 5},        // OpenNIC
-	{"216.146.35.35", 5},    // Oracle Dyn Primary
-	{"216.146.36.36", 5},    // Oracle Dyn Secondary
-	{"91.239.100.100", 5},   // UncensoredDNS Primary
-	{"89.233.43.71", 5},     // UncensoredDNS Secondary
-	{"77.88.8.8", 5},        // Yandex.DNS Primary
-	{"77.88.8.1", 5},        // Yandex.DNS Secondary
-	{"74.82.42.42", 5},      // Hurricane Electric Primary
-	{"94.130.180.225", 5},   // DNS for Family Primary
-	{"78.47.64.161", 5},     // DNS for Family Secondary
-	{"185.236.104.104", 5},  // FlashStart Primary
-	{"185.236.105.105", 5},  // FlashStart Secondary
-	{"80.80.80.80", 5},      // Freenom World Primary
-	{"80.80.81.81", 5},      // Freenom World Secondary
-	{"84.200.69.80", 5},     // DNS.WATCH Primary
-	{"84.200.70.40", 5},     // DNS.WATCH Secondary
-	{"156.154.70.5", 5},     // Neustar Primary
-	{"156.157.71.5", 5},     // Neustar Secondary
-	{"81.218.119.11", 5},    // GreenTeamDNS Primary
-	{"209.88.198.133", 5},   // GreenTeamDNS Secondary
-	{"37.235.1.177", 5},     // FreeDNS
-	{"38.132.106.139", 5},   // CyberGhost
+	{"8.8.8.8", 20},              // Google Primary
+	{"8.8.4.4", 20},              // Google Secondary
+	{"2001:4860:4860::8888", 20}, // Google Primary IPv6
+	{"2001:4860:4860::8844", 20}, // Google Secondary IPv6
+	{"95.85.95.85", 10},          // Gcore DNS Primary
+	{"2.56.220.2", 10},           // Gcore DNS Secondary
+	{"2a03:90c0:999d::1", 10},    // Gcore DNS Primary IPv6
+	{"2a03:90c0:9992::1", 10},    // Gcore DNS Secondary IPv6
+
+	{"76.76.2.0", 10},  // ControlD Primary
+	{"76.76.10.0", 10}, // ControlD Secondary
+
+	{"9.9.9.9", 10},              // Quad9 Primary
+	{"149.112.112.112", 10},      // Quad9 Secondary
+	{"2620:fe::fe", 10},          // Quad9 Primary IPv6
+	{"2620:fe::9", 10},           // Quad9 Secondary IPv6
+	{"208.67.222.222", 10},       // Cisco OpenDNS Home Primary
+	{"208.67.220.220", 10},       // Cisco OpenDNS Home Secondary
+	{"2620:0:ccc::2", 10},        // Cisco OpenDNS Home Primary IPv6
+	{"2620:0:ccd::2", 10},        // Cisco OpenDNS Home Secondary IPv6
+	{"1.1.1.1", 15},              // Cloudflare Primary
+	{"1.0.0.1", 15},              // Cloudflare Secondary
+	{"2606:4700:4700::1111", 15}, // Cloudflare Primary IPv6
+	{"2606:4700:4700::1001", 15}, // Cloudflare Secondary IPv6
+
+	{"185.228.168.9", 5}, // CleanBrowsing Primary  (Security Filter!) https://cleanbrowsing.org/filters/
+	{"185.228.169.9", 5}, // CleanBrowsing Secondary (Security Filter!)
+
+	{"76.76.19.19", 5},     // Alternate DNS Primary
+	{"76.223.122.150", 5},  // Alternate DNS Secondary
+	{"2602:fcbc::ad", 5},   // Alternate DNS Primary IPv6
+	{"2602:fcbc:2::ad", 5}, // Alternate DNS Secondary IPv6
+
+	{"94.140.14.14", 5},    // AdGuard DNS Primary (ads and trackers filtered)
+	{"94.140.15.15", 5},    // AdGuard DNS Secondary (ads and trackers filtered)
+	{"176.103.130.130", 5}, // AdGuard (family filtered)
+	{"176.103.130.131", 5}, // AdGuard (family filtered)
+
+	{"94.140.14.140", 5},   // AdGuard DNS Primary (Unfiltered) https://adguard-dns.io/en/public-dns.html
+	{"94.140.14.141", 5},   // AdGuard DNS Secondary (Unfiltered)
+	{"2a10:50c0::1:ff", 5}, // AdGuard DNS Primary IPv6 (Unfiltered)
+	{"2a10:50c0::2:ff", 5}, // AdGuard DNS Secondary IPv6 (Unfiltered)
+
+	{"8.26.56.26", 5},  // Comodo Secure DNS Primary
+	{"8.20.247.20", 5}, // Comodo Secure DNS Secondary
+
+	{"205.171.3.65", 5}, // CenturyLink Level3 Primary - resolver1.lumen.tech
+	{"205.171.2.65", 5}, // CenturyLink Level3 Secondary - resolver2.lumen.tech
+	{"2001:428::1", 5},  // CenturyLink Level3 Primary IPv6
+	{"2001:428::2", 5},  // CenturyLink Level3 Secondary IPv6
+
+	{"64.6.64.6", 5},       // Verisign DNS Primary
+	{"64.6.65.6", 5},       // Verisign DNS Secondary
+	{"2620:74:1b::1:1", 5}, // Verisign DNS Primary IPv6
+	{"2620:74:1c::2:2", 5}, // Verisign DNS Secondary IPv6
+
+	{"209.244.0.3", 5}, // CenturyLink Level3 - resolver1.level3.net
+	{"209.244.0.4", 5}, // CenturyLink Level3 - resolver2.level3.net
+
+	{"149.112.121.10", 5},    // CIRA Canadian Shield Primary - https://www.cira.ca/en/how-canadian-shield-works/
+	{"149.112.122.10", 5},    // CIRA Canadian Shield Secondary
+	{"2620:10A:80BB::10", 5}, // CIRA Canadian Shield Primary IPv6
+	{"2620:10A:80BC::10", 5}, // CIRA Canadian Shield Secondary IPv6
+
+	{"138.197.140.189", 5}, // OpenNIC Primary (Purple Night Studios) - ns12.ca.dns.opennic.glue
+	{"162.243.19.47", 5},   // OpenNIC Secondary (V3NMHCKR) - ns1.il.us.dns.opennic.glue
+
+	{"216.87.84.211", 5}, // OpenNIC
+	{"23.90.4.6", 5},     // OpenNIC
+
+	{"216.146.35.35", 5}, // Oracle Dyn Primary
+	{"216.146.36.36", 5}, // Oracle Dyn Secondary
+
+	{"91.239.100.100", 5},         // UncensoredDNS Primary
+	{"89.233.43.71", 5},           // UncensoredDNS Secondary
+	{"2001:67c:28a4::", 5},        // UncensoredDNS Primary IPv6
+	{"2a01:3a0:53:53::", 5},       // UncensoredDNS Secondary IPv6
+	{"77.88.8.8", 5},              // Yandex.DNS Primary
+	{"77.88.8.1", 5},              // Yandex.DNS Secondary
+	{"2a02:6b8::feed:0ff", 5},     // Yandex.DNS Primary IPv6
+	{"2a02:6b8:0:1::feed:0ff", 5}, // Yandex.DNS Secondary IPv6
+	{"74.82.42.42", 5},            // Hurricane Electric Primary
+	{"2001:470:20::2", 5},         // Hurricane Electric Primary IPv6
+
+	{"94.130.180.225", 5},        // DNS for Family Primary - dns1.dnsforfamily.com
+	{"78.47.64.161", 5},          // DNS for Family Secondary - dns2.dnsforfamily.com
+	{"2a01:4f8:1c0c:40db::1", 5}, // DNS for Family Primary IPv6
+	{"2a01:4f8:1c17:4df8::1", 5}, // DNS for Family Secondary IPv6
+
+	{"185.236.104.104", 5},     // FlashStart Primary
+	{"185.236.105.105", 5},     // FlashStart Secondary
+	{"2a12:7bc0:104:104::", 5}, // FlashStart Primary IPv6
+	{"2a12:7bc0:105:105::", 5}, // FlashStart Secondary IPv6
+
+	{"80.80.80.80", 5}, // Freenom World Primary
+	{"80.80.81.81", 5}, // Freenom World Secondary
+
+	{"84.200.69.80", 5},               // DNS.WATCH Primary
+	{"84.200.70.40", 5},               // DNS.WATCH Secondary
+	{"2001:1608:10:25::1c04:b12f", 5}, // DNS.WATCH Primary IPv6
+	{"2001:1608:10:25::9249:d69b", 5}, // DNS.WATCH Secondary IPv6
+
+	{"156.154.70.5", 5}, // Neustar Primary ??
+	{"156.157.71.5", 5}, // Neustar Secondary ??
+
+	{"81.218.119.11", 5},  // GreenTeamDNS Primary
+	{"209.88.198.133", 5}, // GreenTeamDNS Secondary
+
+	{"37.235.1.174", 5}, // FreeDNS Primary
+	{"37.235.1.177", 5}, // FreeDNS Secondary
+
+	{"38.132.106.139", 5}, // CyberGhost
+	{"194.187.251.67", 5}, // CyberGhost
 }
 
 var trusted *resolve.Resolvers
